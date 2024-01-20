@@ -1,6 +1,7 @@
 package com.woo.gptapi.controller;
 
-import com.woo.gptapi.dto.QuestionReq;
+import com.google.gson.JsonObject;
+import com.woo.gptapi.dto.TextReq;
 import com.woo.gptapi.service.GptApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,16 +9,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class GptApiController {
 
     private final GptApiService gptApiService;
 
-    @PostMapping("/gpt")
+    @PostMapping("/text")
     @ResponseBody
-    public String getAnswerForQuestion(@RequestBody QuestionReq req) {
-        return gptApiService.getAnswerForQuestion(req).toString();
+    public List<JsonObject> getAnswerForQuestion(@RequestBody TextReq req) {
+        return gptApiService.getAnswerForQuestion(req);
     }
 
 }

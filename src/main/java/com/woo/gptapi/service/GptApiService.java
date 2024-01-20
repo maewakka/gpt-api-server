@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.woo.gptapi.dto.GptApiReq;
-import com.woo.gptapi.dto.QuestionReq;
+import com.woo.gptapi.dto.GptApiTextReq;
+import com.woo.gptapi.dto.TextReq;
 import com.woo.gptapi.feign.ChatGptOpenFeign;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,19 +29,15 @@ public class GptApiService {
     @Value("${gpt.model}")
     private String model;
 
-    public List<JsonObject> getAnswerForQuestion(QuestionReq req) {
+    public List<JsonObject> getAnswerForQuestion(TextReq req) {
 
-        String resp = chatGptOpenFeign.requestAnswerToOpenAiApi(token,
-                GptApiReq.builder()
+        String resp = chatGptOpenFeign.requestAnswerToOpenAiApiByText(token,
+                GptApiTextReq.builder()
                         .model(model)
                         .messages(Arrays.asList(
-                                GptApiReq.Message.builder()
-                                        .role("system")
-                                        .content(req.getSystemContent())
-                                        .build(),
-                                GptApiReq.Message.builder()
+                                GptApiTextReq.Message.builder()
                                         .role("user")
-                                        .content(req.getUserContent())
+                                        .content(req.getQuestion())
                                         .build()
                         ))
                         .build());
@@ -53,5 +49,4 @@ public class GptApiService {
 
         return gson.fromJson(choicesArray.toString(), type);
     }
-
 }

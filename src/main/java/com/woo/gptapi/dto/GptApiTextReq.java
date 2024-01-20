@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class GptApiReq {
+public class GptApiTextReq {
 
     private String model;
     private List<Message> messages;
